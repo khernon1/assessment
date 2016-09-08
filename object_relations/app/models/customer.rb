@@ -1,12 +1,10 @@
 class Customer
 
-  attr_accessor :name, :restaurants, :reviews
+  attr_accessor :name
   @@all = []
 
   def initialize(name)
     @name = name
-    @reviews = []
-    @restaurants = []
     @@all << self
   end  
 
@@ -18,13 +16,24 @@ class Customer
     self.all.find { |customer| customer.name == name }
   end
 
-  def add_review(content)
-    @reviews << content
-    byebug    
+  def add_review(content, restaurant_name)    
+    restaurant = Restaurant.find_or_create_restaurant(restaurant_name)
+    Review.new(content, restaurant, self) 
   end
 
-  def add_restaurant(restaurant)
-    @restaurants << restaurant
+  def reviews
+    Review.all.select { |review| review.customer == self }
+  end
+
+  def add_restaurant(restaurant_name)
+    restaurant = Restaurant.find_by_name(restaurant_name)
+      if !restaurant
+        Restaurant.new(restaurant_name)
+      end
+  end
+
+  def restaurants
+    self.reviews.map { |review| review.restaurant }
   end
 
 end

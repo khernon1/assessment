@@ -1,15 +1,12 @@
 class Review
  
-  attr_accessor :content, :restaurants, :reviews
+  attr_accessor :content, :restaurant, :customer
   @@all = []
 
   def initialize(content, restaurant, customer)
     @content = content
     @restaurant = restaurant
     @customer = customer
-    customer.add_review(content)
-    customer.add_restaurant(restaurant)
-    restaurant.add_review(content)
     @@all << self
   end  
 
@@ -30,4 +27,5 @@ pizza = Restaurant.new('pizza')
 sandwiches = Restaurant.new('sandwiches')
 
 Review.new('it was good', pizza, customer1)
+Review.new('not bad', pizza, customer2)
 
